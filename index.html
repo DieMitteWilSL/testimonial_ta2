@@ -1,0 +1,899 @@
+<!doctype html>
+<!-- 
+ /\_/\  
+( o.o ) 
+ > ^ <
+ MIAU MIAU -->
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Die Mitte Wil – Banner-Generator</title>
+  <style>
+    :root {
+      --brand-orange: #ff9b00;
+      --brand-orange-dark: #e48700;
+      --brand-blue: #0b4a84;
+      --brand-anthracite: #2f3136;
+      --brand-text: #1f2937;
+      --brand-muted: #6b7280;
+      --brand-bg: #f7f7f5;
+      --card-bg: #ffffff;
+      --card-border: #ece7df;
+      --shadow: 0 10px 30px rgba(31, 41, 55, 0.08);
+      --radius: 18px;
+      --whatsapp-green: #25D366;
+      --whatsapp-green-dark: #1ebe5b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+      padding: 32px 20px;
+      background: linear-gradient(180deg, #fff8ef 0%, var(--brand-bg) 180px);
+      color: var(--brand-text);
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--brand-orange) 0%, #ffb943 100%);
+      color: #fff;
+      border-radius: 24px;
+      padding: 24px 24px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px 0;
+      font-size: clamp(26px, 4vw, 38px);
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.95);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      margin: 0 0 14px 0;
+      font-size: 20px;
+      line-height: 1.2;
+      color: var(--brand-anthracite);
+    }
+
+    .intro {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--brand-muted);
+      margin-bottom: 18px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-anthracite);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      border: 1px dashed #d8d1c6;
+      background: #fcfbf9;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 14px;
+      color: var(--brand-text);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--brand-orange);
+      cursor: pointer;
+    }
+
+    .person-select {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .person-btn {
+      appearance: none;
+      width: 100%;
+      border: 1px solid #d9dfe6;
+      background: #f3f4f6;
+      color: var(--brand-anthracite);
+      border-radius: 18px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      align-items: center;
+      gap: 16px;
+      text-align: left;
+      box-shadow: 0 6px 18px rgba(31, 41, 55, 0.05);
+    }
+
+    .person-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(31, 41, 55, 0.10);
+      background: #eef2f7;
+    }
+
+    .person-btn.active {
+      border-color: var(--brand-orange);
+      background: #fff7eb;
+      box-shadow: 0 12px 28px rgba(255, 155, 0, 0.18);
+    }
+
+    .person-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #f59e0b;
+      flex: 0 0 auto;
+      border: 4px solid #ffffff;
+      box-shadow: 0 6px 16px rgba(31, 41, 55, 0.10);
+    }
+
+    .person-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .person-text {
+      display: grid;
+      gap: 4px;
+    }
+
+    .person-name {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--brand-blue);
+    }
+
+    .person-subtitle {
+      font-size: 14px;
+      line-height: 1.3;
+      color: #1f2937;
+      font-weight: 600;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid #d7d2c9;
+      background: #fff;
+      color: var(--brand-anthracite);
+      border-radius: 12px;
+      padding: 11px 15px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(31, 41, 55, 0.08);
+      background: #fffdf9;
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    
+    .mitte-word {
+      color: var(--brand-blue);
+    }
+
+    #reset {
+      min-width: 130px;
+    }
+
+    #download {
+      padding: 15px 24px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--brand-orange) 0%, var(--brand-orange-dark) 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: .01em;
+      box-shadow: 0 10px 22px rgba(255, 155, 0, 0.28);
+    }
+
+    #download:hover:not(:disabled) {
+      filter: brightness(1.02);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(255, 155, 0, 0.34);
+    }
+
+    #download:disabled {
+      background: #9ca3af;
+      box-shadow: none;
+      filter: none;
+    }
+
+    #shareWhatsApp {
+      padding: 15px 24px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--whatsapp-green) 0%, var(--whatsapp-green-dark) 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: .01em;
+      box-shadow: 0 10px 22px rgba(37, 211, 102, 0.28);
+    }
+
+    #shareWhatsApp:hover:not(:disabled) {
+      filter: brightness(1.02);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(37, 211, 102, 0.34);
+    }
+
+    #shareWhatsApp:disabled {
+      background: #9ca3af;
+      box-shadow: none;
+      filter: none;
+    }
+
+    .tips {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--brand-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .tips li + li {
+      margin-top: 6px;
+    }
+
+    .canvas-card {
+      padding: 16px;
+    }
+
+    .canvas-frame {
+      background: linear-gradient(180deg, #fff 0%, #faf8f3 100%);
+      border: 1px solid #eee6d9;
+      border-radius: 20px;
+      padding: 14px;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      border: 1px solid #eee4d3;
+      touch-action: none;
+      background: #fff;
+    }
+
+    .download-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.45;
+      border: 1px solid #fecaca;
+      background: #fff1f2;
+      color: #991b1b;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--brand-muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      body {
+        padding: 20px 14px;
+      }
+
+      .hero, .card {
+        border-radius: 18px;
+      }
+
+      .person-btn {
+        grid-template-columns: 72px 1fr;
+        padding: 14px;
+        gap: 14px;
+      }
+
+      .person-avatar {
+        width: 72px;
+        height: 72px;
+      }
+
+      .person-name {
+        font-size: 15px;
+      }
+
+      .person-subtitle {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1><span class="mitte-word">Mitte</span>nand Unterstützung sichtbar machen</h1>
+      <p>
+        Wählen Sie Ihre Kandidatur, laden Sie Ihr Foto hoch und teilen Sie Ihr persönliches Banner.
+      </p>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Bild vorbereiten</h2>
+        <div class="intro">
+          Wählen Sie zuerst die Person aus. Danach können Sie ein Foto hochladen, den Ausschnitt mit Maus oder Finger verschieben und mit dem Regler vergrössern oder verkleinern.
+        </div>
+
+        <div class="field">
+          <label>Kandidatur auswählen</label>
+          <div class="person-select" id="personSelect"></div>
+        </div>
+
+        <div class="field">
+          <label for="photo">Foto hochladen</label>
+          <input id="photo" type="file" accept="image/*" />
+        </div>
+
+        <div class="field">
+          <label for="zoom">Zoom</label>
+          <input id="zoom" type="range" min="1" max="3" step="0.01" value="1" disabled />
+        </div>
+
+        <div class="button-row">
+          <button id="reset" disabled>Zurücksetzen</button>
+        </div>
+
+        <ul class="tips">
+          <li>Zuerst die gewünschte Person auswählen.</li>
+          <li>Das Foto kann im Kreis frei positioniert werden.</li>
+          <li>Der Zoom hilft, den gewünschten Ausschnitt optimal zu setzen.</li>
+          <li>Am Schluss kann das Banner direkt als PNG gespeichert oder auf dem Handy geteilt werden.</li>
+        </ul>
+
+        <div id="status" class="status"></div>
+      </div>
+
+      <div class="card canvas-card">
+        <div class="canvas-frame">
+          <canvas id="c"></canvas>
+        </div>
+
+        <div class="download-wrap">
+          <button id="download" disabled>⬇ Banner als PNG herunterladen</button>
+          <button id="shareWhatsApp" disabled>📲 In WhatsApp teilen</button>
+        </div>
+
+        <div class="footer-note">
+          Vielen Dank für die Unterstützung!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // KONFIGURATION
+    // =========================
+    const PEOPLE = {
+      andreas: {
+        name: "Andreas Breitenmoser",
+        subtitle: "Ins Stadtpräsidium",
+        banner: "https://raw.githubusercontent.com/DieMitteWilSL/testimonial_ta/refs/heads/main/banner2.png",
+        portrait: "https://wil.sg.die-mitte.ch/wp-content/uploads/sites/169/2025/04/AndiBreitenmoser-300x240.jpg"
+      },
+      thomas: {
+        name: "Thomas Abbt",
+        subtitle: "Für Wil in den Stadtrat",
+        banner: "https://raw.githubusercontent.com/DieMitteWilSL/testimonial_ta/refs/heads/main/banner.png",
+        portrait: "https://wil.sg.die-mitte.ch/wp-content/uploads/sites/169/2025/04/ThomasAbbt_001-300x240.jpg"
+      }
+    };
+
+    const DEFAULT_PERSON = "andreas";
+
+    const FALLBACK_SIZE = { w: 2048, h: 1365 };
+    const REF_SIZE = { w: 2048, h: 1365 };
+    const CIRCLE_REF = { cx: 1569, cy: 674, r: 312 };
+    const BORDER = { enabled: true, width: 8, color: "#ffffff" };
+
+    function getCircle() {
+      const sx = canvas.width / REF_SIZE.w;
+      const sy = canvas.height / REF_SIZE.h;
+      const s = (sx + sy) / 2;
+      return {
+        cx: CIRCLE_REF.cx * sx,
+        cy: CIRCLE_REF.cy * sy,
+        r: CIRCLE_REF.r * s,
+      };
+    }
+
+    // =========================
+    // DOM / STATUS
+    // =========================
+    const canvas = document.getElementById("c");
+    const ctx = canvas.getContext("2d");
+
+    const input = document.getElementById("photo");
+    const zoomEl = document.getElementById("zoom");
+    const btnDownload = document.getElementById("download");
+    const btnShareWhatsApp = document.getElementById("shareWhatsApp");
+    const btnReset = document.getElementById("reset");
+    const statusEl = document.getElementById("status");
+    const personSelectEl = document.getElementById("personSelect");
+
+    canvas.width = FALLBACK_SIZE.w;
+    canvas.height = FALLBACK_SIZE.h;
+
+    const bgImg = new Image();
+    bgImg.crossOrigin = "anonymous";
+
+    let selectedPerson = DEFAULT_PERSON;
+    let bgLoaded = false;
+    let userImg = null;
+
+    let baseScale = 1;
+    let zoom = 1;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    // =========================
+    // PERSONEN-AUSWAHL
+    // =========================
+    function renderPersonButtons() {
+      personSelectEl.innerHTML = "";
+
+      Object.entries(PEOPLE).forEach(([key, person]) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "person-btn" + (key === selectedPerson ? " active" : "");
+        btn.dataset.person = key;
+
+        btn.innerHTML = `
+          <span class="person-avatar">
+            <img src="${person.portrait}" alt="${person.name}">
+          </span>
+          <span class="person-text">
+            <span class="person-name">${person.name}</span>
+            <span class="person-subtitle">${person.subtitle || ""}</span>
+          </span>
+        `;
+
+        btn.addEventListener("click", () => {
+          if (selectedPerson === key) return;
+          selectedPerson = key;
+          renderPersonButtons();
+          loadBannerForSelectedPerson();
+        });
+
+        personSelectEl.appendChild(btn);
+      });
+    }
+
+    function loadBannerForSelectedPerson() {
+      hideStatus();
+      bgLoaded = false;
+
+      const person = PEOPLE[selectedPerson];
+      if (!person || !person.banner) {
+        setStatus("Für die ausgewählte Person ist noch kein Banner hinterlegt.");
+        render();
+        return;
+      }
+
+      bgImg.src = person.banner;
+    }
+
+    // =========================
+    // BANNER LADEN
+    // =========================
+    bgImg.onload = () => {
+      bgLoaded = true;
+      canvas.width = bgImg.naturalWidth || FALLBACK_SIZE.w;
+      canvas.height = bgImg.naturalHeight || FALLBACK_SIZE.h;
+
+      if (userImg) {
+        clampOffsets();
+      }
+
+      hideStatus();
+      render();
+    };
+
+    bgImg.onerror = () => {
+      bgLoaded = false;
+      setStatus("Das Banner konnte nicht geladen werden. Bitte prüfen Sie den Bildpfad oder die Bilddatei.");
+      render();
+    };
+
+    // =========================
+    // BILD UPLOAD
+    // =========================
+    input.addEventListener("change", async () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      try {
+        userImg = await loadImageFromFile(file);
+        setupInitialTransform();
+
+        zoomEl.disabled = false;
+        btnDownload.disabled = false;
+        btnShareWhatsApp.disabled = false;
+        btnReset.disabled = false;
+
+        hideStatus();
+        render();
+      } catch (err) {
+        setStatus("Das gewählte Foto konnte nicht geladen werden.");
+      }
+    });
+
+    function setupInitialTransform() {
+      zoom = 1;
+      zoomEl.value = "1";
+
+      const C = getCircle();
+      const d = C.r * 2;
+      const iw = userImg.naturalWidth;
+      const ih = userImg.naturalHeight;
+
+      const OVERSCAN = 1.05;
+      baseScale = Math.max(d / iw, d / ih) * OVERSCAN;
+
+      offsetX = 0;
+      offsetY = 0;
+
+      clampOffsets();
+    }
+
+    // =========================
+    // ZOOM
+    // =========================
+    zoomEl.addEventListener("input", () => {
+      if (!userImg) return;
+
+      const prevZoom = zoom;
+      zoom = parseFloat(zoomEl.value);
+
+      const factor = zoom / prevZoom;
+      offsetX *= factor;
+      offsetY *= factor;
+
+      clampOffsets();
+      render();
+    });
+
+    // =========================
+    // DRAG
+    // =========================
+    canvas.addEventListener("pointerdown", (e) => {
+      if (!userImg) return;
+
+      const p = getCanvasPoint(e);
+      if (!isInsideCircle(p.x, p.y)) return;
+
+      dragging = true;
+      lastX = p.x;
+      lastY = p.y;
+      canvas.setPointerCapture(e.pointerId);
+    });
+
+    canvas.addEventListener("pointermove", (e) => {
+      if (!dragging || !userImg) return;
+
+      const p = getCanvasPoint(e);
+      const dx = p.x - lastX;
+      const dy = p.y - lastY;
+
+      offsetX += dx;
+      offsetY += dy;
+
+      lastX = p.x;
+      lastY = p.y;
+
+      clampOffsets();
+      render();
+    });
+
+    canvas.addEventListener("pointerup", (e) => {
+      dragging = false;
+      try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+    });
+
+    canvas.addEventListener("pointercancel", () => {
+      dragging = false;
+    });
+
+    function isInsideCircle(x, y) {
+      const C = getCircle();
+      const dx = x - C.cx;
+      const dy = y - C.cy;
+      return (dx * dx + dy * dy) <= (C.r * C.r);
+    }
+
+    // =========================
+    // BUTTONS
+    // =========================
+    btnReset.addEventListener("click", () => {
+      if (!userImg) return;
+      setupInitialTransform();
+      render();
+    });
+
+    btnDownload.addEventListener("click", () => {
+      if (!bgLoaded) {
+        setStatus("Das Banner ist noch nicht geladen.");
+        return;
+      }
+
+      try {
+        const person = PEOPLE[selectedPerson];
+        const safeName = getSafePersonName(person.name);
+
+        const a = document.createElement("a");
+        a.download = `DieMitteWil_Banner_${safeName}.png`;
+        a.href = canvas.toDataURL("image/png");
+        a.click();
+        hideStatus();
+      } catch (err) {
+        setStatus("Das Banner konnte nicht exportiert werden. Bitte prüfen Sie, ob alle Bilder korrekt geladen wurden.");
+      }
+    });
+
+    btnShareWhatsApp.addEventListener("click", async () => {
+      if (!bgLoaded || !userImg) {
+        setStatus("Bitte zuerst ein Banner mit Foto erstellen.");
+        return;
+      }
+
+      try {
+        const blob = await canvasToBlob(canvas, "image/png");
+        const person = PEOPLE[selectedPerson];
+        const safeName = getSafePersonName(person.name);
+
+        const file = new File(
+          [blob],
+          `DieMitteWil_Banner_${safeName}.png`,
+          { type: "image/png" }
+        );
+
+        if (
+          navigator.share &&
+          navigator.canShare &&
+          navigator.canShare({ files: [file] })
+        ) {
+          await navigator.share({
+            files: [file],
+            title: "Mein Banner",
+            text: "Mein persönliches Banner"
+          });
+          hideStatus();
+        } else {
+          setStatus("Direktes Teilen wird auf diesem Gerät oder Browser nicht unterstützt. Bitte das Banner herunterladen und anschliessend in WhatsApp als Status hochladen.");
+        }
+      } catch (err) {
+        if (err && err.name === "AbortError") {
+          hideStatus();
+          return;
+        }
+
+        setStatus("Das Teilen konnte nicht gestartet werden. Bitte das Banner herunterladen und manuell in WhatsApp verwenden.");
+      }
+    });
+
+    // =========================
+    // RENDER
+    // =========================
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (bgLoaded) {
+        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.fillStyle = "#f8fafc";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      if (userImg) {
+        drawCircularImageWithTransform(ctx, userImg);
+        if (BORDER.enabled) drawBorder(ctx);
+      }
+    }
+
+    function drawCircularImageWithTransform(ctx, img) {
+      const C = getCircle();
+      const r = C.r;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(C.cx, C.cy, r, 0, Math.PI * 2);
+      ctx.clip();
+
+      const scale = baseScale * zoom;
+      const w = img.naturalWidth * scale;
+      const h = img.naturalHeight * scale;
+
+      const x = (C.cx - w / 2) + offsetX;
+      const y = (C.cy - h / 2) + offsetY;
+
+      ctx.drawImage(img, x, y, w, h);
+      ctx.restore();
+    }
+
+    function drawBorder(ctx) {
+      const C = getCircle();
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(C.cx, C.cy, C.r + BORDER.width / 2, 0, Math.PI * 2);
+      ctx.lineWidth = BORDER.width;
+      ctx.strokeStyle = BORDER.color;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // =========================
+    // CLAMPING
+    // =========================
+    function clampOffsets() {
+      if (!userImg) return;
+
+      const C = getCircle();
+      const d = C.r * 2;
+
+      const scale = baseScale * zoom;
+      const w = userImg.naturalWidth * scale;
+      const h = userImg.naturalHeight * scale;
+
+      const maxX = Math.max(0, (w - d) / 2);
+      const maxY = Math.max(0, (h - d) / 2);
+
+      offsetX = clamp(offsetX, -maxX, maxX);
+      offsetY = clamp(offsetY, -maxY, maxY);
+    }
+
+    function clamp(v, min, max) {
+      return Math.min(max, Math.max(min, v));
+    }
+
+    // =========================
+    // HELFER
+    // =========================
+    function loadImageFromFile(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(img);
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error("Bild konnte nicht geladen werden"));
+        };
+        img.src = url;
+      });
+    }
+
+    function canvasToBlob(canvas, type = "image/png", quality) {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error("Blob konnte nicht erstellt werden"));
+          }
+        }, type, quality);
+      });
+    }
+
+    function getSafePersonName(name) {
+      return name
+        .toLowerCase()
+        .replaceAll(" ", "_")
+        .replaceAll("ä", "ae")
+        .replaceAll("ö", "oe")
+        .replaceAll("ü", "ue")
+        .replaceAll("ß", "ss");
+    }
+
+    function getCanvasPoint(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (e.clientX - rect.left) * (canvas.width / rect.width),
+        y: (e.clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+
+    function setStatus(message) {
+      statusEl.style.display = "block";
+      statusEl.textContent = message;
+    }
+
+    function hideStatus() {
+      statusEl.style.display = "none";
+      statusEl.textContent = "";
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    renderPersonButtons();
+    loadBannerForSelectedPerson();
+  </script>
+</body>
+</html>
